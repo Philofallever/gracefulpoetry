@@ -1,0 +1,71 @@
+body {
+	background-color: transparent;
+}
+
+.color-list {
+	list-style: none;
+	padding: 0;
+}
+
+.color-entry {
+	width: 100%;
+	display: flex;
+	margin-bottom: 0.4em;
+	border: 1px solid var(--vscode-input-border);
+}
+
+.color-preview {
+	width: 2em;
+	height: 2em;
+}
+
+.color-preview:hover {
+	outline: inset white;
+}
+
+.color-input {
+	display: block;
+	flex: 1;
+	width: 100%;
+	color: var(--vscode-input-foreground);
+	background-color: var(--vscode-input-background);
+	border: none;
+	padding: 0 0.6em;
+}
+
+.add-color-button {
+	display: block;
+	border: none;
+	margin: 0 auto;
+}
+
+html {
+	box-sizing: border-box;
+	font-size: 13px;
+}
+
+*,
+*:before,
+*:after {
+	box-sizing: inherit;
+}
+
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ol,
+ul {
+	margin: 0;
+	padding: 0;
+	font-weight: normal;
+}
+
+img {
+	max-width: 100%;
+	height: auto;
+}

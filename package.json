@@ -1,13 +1,13 @@
 {
 	"name": "gracefulpoetry",
-	"displayName": "唐诗宋词",
+	"displayName": "中文诗歌",
 	"description": "显示唐诗宋词的小插件",
     "publisher": "Fallever",
     "repository": {
         "type": "github",
         "url": "https://github.com/Philofallever/gracefulpoetry"
     },
-    "icon": "/media/icon.png",
+    "icon": "media/icon.png",
     "author": "Fallever",
 	"version": "1.0.0",
 	"engines": {
@@ -26,7 +26,7 @@
 				{
 					"type": "webview",
 					"id": "gracefulPoetry.view",
-					"name": "诗词"
+					"name": "中文诗歌"
 				}
 			]
 		},

@@ -45,10 +45,15 @@ html {
     box-sizing: inherit;
 }
 
+@font-face {
+    font-family: "LXGW";
+    src: url(LXGW.ttf);
+}
+
 body {
     background-color: transparent;
     font-size: 16px;
-    font-family: 'LXGW WenKai Mono';
+    font-family: 'LXGW WenKai Mono',"LXGW",var(--vscode-font-family);
     color: black;
 	margin: 0;
     padding: 0;

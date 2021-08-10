@@ -10,7 +10,6 @@ export async function activate(context: vscode.ExtensionContext)
     gracefulpoetry.onActivate(context);
     vscode.window.registerWebviewViewProvider(PoetryView.viewId, new PoetryView(context));
     vscode.commands.registerCommand("gracefulpoetry.refresh", PoetryView.refresh);
-
 }
 
 // this method is called when your extension is deactivated

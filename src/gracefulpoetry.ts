@@ -191,7 +191,7 @@ export async function checkFileMatch(): Promise<void>
     print("check success,all poet/ci file has its rank file!");
 }
 
-export async function getRandomliber(liberRandArg?: liberType | number): Promise<entry>
+export async function getRandomliber(liberRandArg?: liberType | number): Promise<[entry, entry[]]>
 {
     let liberDirName = ciDirName;
     switch (typeof liberRandArg)
@@ -224,7 +224,13 @@ export async function getRandomliber(liberRandArg?: liberType | number): Promise
     const rank = ranks[index];
     entry.rank = rank ? Math.floor(rank.baidu * 0.7 + rank.google * 0.2 + rank.bing * 0.1) : 0;
 
-    return entry;
+    return checkEntry(entry) ? [entry, entries] : await getRandomliber(liberRandArg);
+}
+
+function checkEntry(entry: entry): boolean
+{
+    let content = entry.paragraphs;
+    return content.length > 3;
 }
 
 export async function getRankestEntryInSeveralTimes(count?: number, liberRandArg?: number | liberType): Promise<entry>
@@ -233,7 +239,7 @@ export async function getRankestEntryInSeveralTimes(count?: number, liberRandArg
     let result: entry | undefined = undefined;
     do
     {
-        const item = await getRandomliber(liberRandArg);
+        const [item] = await getRandomliber(liberRandArg);
         if (result === undefined || result.rank < item.rank)
             result = item;
 
@@ -247,28 +253,42 @@ let lastEntry: entry | undefined;
 export async function getPopularEntry(liberRandArg?: number | liberType): Promise<entry>
 {
     if (lastEntry === undefined)
-        lastEntry = await getRandomliber();
+        [lastEntry] = await getRandomliber();
 
-    const maxCycle = 15;
-
-    let currCycleMax: entry | undefined;
-    for (let index = 0; index < maxCycle; index++)
+    const item = await getRankestEntryInSeveralTimes(5, liberRandArg);
+    if (item.rank > lastEntry.rank)
     {
-        const item = await getRankestEntryInSeveralTimes(50, liberRandArg);
-        if (item.rank > lastEntry.rank)
+        lastEntry = item;
+        return item;
+    }
+
+    // 开始衰减
+    let x = 1;
+    let k = 1 / 20;
+
+    while (k * x < 1)
+    {
+        let r = lastEntry.rank * (1 - k * x);
+        let [entry, entryList] = await getRandomliber();
+        if (entry.rank > r)
         {
-            lastEntry = item;
-            return lastEntry;
+            lastEntry = entry;
+            return entry;
         }
         else
         {
-            if (currCycleMax === undefined || currCycleMax.rank < item.rank)
+            entryList.forEach(x =>
             {
-                currCycleMax = item;
-            }
+                if (x.rank > r)
+                {
+                    lastEntry = x;
+                    return x;
+                }
+            });
         }
+        ++x;
     }
 
-    lastEntry = currCycleMax as entry;
+    [lastEntry] = await getRandomliber();
     return lastEntry;
 }

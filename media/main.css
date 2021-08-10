@@ -1,71 +1,89 @@
-body {
-	background-color: transparent;
-}
-
 .color-list {
-	list-style: none;
-	padding: 0;
+    list-style: none;
+    padding: 0;
 }
 
 .color-entry {
-	width: 100%;
-	display: flex;
-	margin-bottom: 0.4em;
-	border: 1px solid var(--vscode-input-border);
+    width: 100%;
+    display: flex;
+    margin-bottom: 0.4em;
+    border: 1px solid var(--vscode-input-border);
 }
 
 .color-preview {
-	width: 2em;
-	height: 2em;
+    width: 2em;
+    height: 2em;
 }
 
 .color-preview:hover {
-	outline: inset white;
+    outline: inset white;
 }
 
 .color-input {
-	display: block;
-	flex: 1;
-	width: 100%;
-	color: var(--vscode-input-foreground);
-	background-color: var(--vscode-input-background);
-	border: none;
-	padding: 0 0.6em;
+    display: block;
+    flex: 1;
+    width: 100%;
+    color: var(--vscode-input-foreground);
+    background-color: var(--vscode-input-background);
+    border: none;
+    padding: 0 0.6em;
 }
 
 .add-color-button {
-	display: block;
-	border: none;
-	margin: 0 auto;
+    display: block;
+    border: none;
+    margin: 0 auto;
 }
 
 html {
-	box-sizing: border-box;
-	font-size: 13px;
+    box-sizing: border-box;
 }
 
 *,
 *:before,
 *:after {
-	box-sizing: inherit;
+    box-sizing: inherit;
 }
 
-body,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p,
-ol,
-ul {
+body {
+    background-color: transparent;
+    font-size: 16px;
+    font-family: 'LXGW WenKai Mono';
+    color: black;
 	margin: 0;
-	padding: 0;
-	font-weight: normal;
+    padding: 0;
 }
 
-img {
-	max-width: 100%;
-	height: auto;
+h3,h4 {
+    text-align: center;
 }
+
+dd {
+    cursor: pointer;
+    font-size: 14px;
+    color: #2196f3;
+    opacity: .7;
+    text-align: center;
+    margin-top: -10px;
+    margin-bottom: -10px;
+}
+
+ul,ol 
+{
+    padding: 0;
+    font-weight: normal;
+    text-align: center;
+    list-style: none;
+    margin-left: 24px;
+    margin-right: 24px;
+}
+
+li
+{
+    line-height: 140%;
+}
+
+/* img {
+    max-width: 100%;
+    height: auto;
+} */

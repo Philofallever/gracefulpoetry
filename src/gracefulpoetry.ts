@@ -216,14 +216,17 @@ export async function getRandomliber(liberRandArg?: liberType | number): Promise
     p = path.join(p, f);
     const entries = await loadJson<entry>(p);
     let index = Math.floor(Math.random() * (entries.length - 1));
-    const entry = entries[index];
     const [first, second, ...rest] = f.split(".");
     const rankFileName = [first, second, "rank", ...rest].join(".");
     const rankFilePath = path.join(rankPath, liberDirName, rankFileName);
     const ranks = await loadJson<rankEntry>(rankFilePath);
-    const rank = ranks[index];
-    entry.rank = rank ? Math.floor(rank.baidu * 0.7 + rank.google * 0.2 + rank.bing * 0.1) : 0;
+    entries.forEach((x, index) =>
+    {
+        const rank = ranks[index];
+        x.rank = rank ? Math.floor(rank.baidu * 0.7 + rank.google * 0.2 + rank.bing * 0.1) : 0;
+    });
 
+    const entry = entries[index];
     return checkEntry(entry) ? [entry, entries] : await getRandomliber(liberRandArg);
 }
 
@@ -264,11 +267,10 @@ export async function getPopularEntry(liberRandArg?: number | liberType): Promis
 
     // 开始衰减
     let x = 1;
-    let k = 1 / 20;
 
-    while (k * x < 1)
+    while (x <= 20)
     {
-        let r = lastEntry.rank * (1 - k * x);
+        let r = lastEntry.rank * 1 / (0.01 * x * x);
         let [entry, entryList] = await getRandomliber();
         if (entry.rank > r)
         {
@@ -277,14 +279,14 @@ export async function getPopularEntry(liberRandArg?: number | liberType): Promis
         }
         else
         {
-            entryList.forEach(x =>
+            for (const entry of entryList)
             {
-                if (x.rank > r)
+                if (entry.rank > r && checkEntry(entry))
                 {
-                    lastEntry = x;
-                    return x;
+                    lastEntry = entry;
+                    return entry;
                 }
-            });
+            }
         }
         ++x;
     }

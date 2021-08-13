@@ -1,20 +1,30 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
+
+import * as path from "path";
 import * as vscode from 'vscode';
 import * as gracefulpoetry from "./gracefulpoetry";
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
+
+let _context: vscode.ExtensionContext;
+let _starList: gracefulpoetry.entry[] = [];
 export async function activate(context: vscode.ExtensionContext)
 {
+    _context = context;
     gracefulpoetry.onActivate(context);
     vscode.window.registerWebviewViewProvider(PoetryView.viewId, new PoetryView(context));
     vscode.commands.registerCommand("gracefulpoetry.refresh", PoetryView.refresh);
+    vscode.commands.registerCommand("gracefulpoetry.star", gracefulpoetry.starCurrEntry);
+    vscode.commands.registerCommand("gracefulpoetry.unstar", gracefulpoetry.unstarCurrEntry);
 }
 
 // this method is called when your extension is deactivated
-export function deactivate() { }
-
+export function deactivate()
+{
+    gracefulpoetry.onDeactive();
+}
 
 class PoetryView implements vscode.WebviewViewProvider
 {
@@ -22,7 +32,6 @@ class PoetryView implements vscode.WebviewViewProvider
     static instance?: PoetryView;
     private extContext: vscode.ExtensionContext;
     private _view?: vscode.WebviewView;
-
 
     constructor(context: vscode.ExtensionContext)
     {
@@ -53,6 +62,7 @@ class PoetryView implements vscode.WebviewViewProvider
         let author = entry.author;
         let paras = entry.paragraphs;
         let list: string[] = new Array(paras.length);
+        gracefulpoetry.setCurrViewEntry(entry);
         paras.forEach((item, index, _) =>
         {
             item = `<li>${item}</li>`;
@@ -136,7 +146,7 @@ class PoetryView implements vscode.WebviewViewProvider
         if (PoetryView.instance._view === undefined)
             return;
 
-            PoetryView.instance.getHtmlForWebview(PoetryView.instance._view.webview).then(x =>
+        PoetryView.instance.getHtmlForWebview(PoetryView.instance._view.webview).then(x =>
         {
             PoetryView.instance!._view!.webview.html = x;
         });

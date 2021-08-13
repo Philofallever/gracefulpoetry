@@ -75,14 +75,20 @@ export function onActivate(context: vscode.ExtensionContext): void
     print(dataRoot);
     // checkAuthors();
     checkFileMatch();
+    loadStarList();
 }
 
-// public get context() :  {
-//     return this._context;
-// }
-// public set context(v : ) {
-//     this._context = v;
-// }
+export function onDeactive()
+{
+    saveStarList();
+}
+
+let _currViewEntry: entry;
+// 当前webview显示的条目
+export function setCurrViewEntry(entry: entry)
+{
+    _currViewEntry = entry;
+}
 
 
 async function loadJson<T>(path: string): Promise<T[]>
@@ -142,7 +148,6 @@ async function checkAuthors(): Promise<Map<string, authorEntry>>
     return map;
 }
 
-
 export async function checkFileMatch(): Promise<void>
 {
     for (const dirName of [ciDirName, poetDirName])
@@ -189,6 +194,35 @@ export async function checkFileMatch(): Promise<void>
         }
     }
     print("check success,all poet/ci file has its rank file!");
+}
+
+
+let _starList: entry[];
+async function loadStarList(): Promise<void>
+{
+    try
+    {
+        let filePath = path.join(extContext.extensionPath, "starlist.json");
+        _starList = await loadJson<entry>(filePath);
+    } catch (error)
+    {
+        _starList = [];
+    }
+    finally
+    {
+        print(_starList.length);
+    }
+}
+
+async function saveStarList()
+{
+    if (!_starList) return;
+
+    let filePath = path.join(extContext.extensionPath, "starlist.json");
+    fs.writeFile(filePath, JSON.stringify(_starList), function ()
+    {
+        print("save ok")!;
+    });
 }
 
 export async function getRandomliber(liberRandArg?: liberType | number): Promise<[entry, entry[]]>
@@ -294,3 +328,26 @@ export async function getPopularEntry(liberRandArg?: number | liberType): Promis
     [lastEntry] = await getRandomliber();
     return lastEntry;
 }
+
+export function starCurrEntry(): void
+{
+
+}
+
+export function unstarCurrEntry(): void
+{
+
+}
+
+export function isCurrStarred(): boolean
+{
+    if (!_starList) return false;
+
+    if (!_currViewEntry) return false;
+
+    return true;
+    // return _starList.find((x, i) =>
+    // {
+    //     return true;
+    // });
+}   

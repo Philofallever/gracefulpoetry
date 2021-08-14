@@ -351,3 +351,32 @@ export function isCurrStarred(): boolean
     //     return true;
     // });
 }   
+
+export function all(arg0: string, all: any)
+{
+    throw new Error("Function not implemented.");
+}
+
+
+export function ci(arg0: string, ci: any)
+{
+    throw new Error("Function not implemented.");
+}
+
+
+export function poetry(arg0: string, poetry: any)
+{
+    throw new Error("Function not implemented.");
+}
+
+
+export function allscope(arg0: string, allscope: any)
+{
+    throw new Error("Function not implemented.");
+}
+
+
+export function starscope(arg0: string, starscope: any)
+{
+    throw new Error("Function not implemented.");
+}

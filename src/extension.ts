@@ -18,6 +18,12 @@ export async function activate(context: vscode.ExtensionContext)
     vscode.commands.registerCommand("gracefulpoetry.refresh", PoetryView.refresh);
     vscode.commands.registerCommand("gracefulpoetry.star", gracefulpoetry.starCurrEntry);
     vscode.commands.registerCommand("gracefulpoetry.unstar", gracefulpoetry.unstarCurrEntry);
+    vscode.commands.registerCommand("gracefulpoetry.all", gracefulpoetry.all);
+    vscode.commands.registerCommand("gracefulpoetry.ci", gracefulpoetry.ci);
+    vscode.commands.registerCommand("gracefulpoetry.poetry", gracefulpoetry.poetry);
+    vscode.commands.registerCommand("gracefulpoetry.allscope", gracefulpoetry.allscope);
+    vscode.commands.registerCommand("gracefulpoetry.starscope", gracefulpoetry.starscope);
+
 }
 
 // this method is called when your extension is deactivated

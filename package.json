@@ -1,7 +1,7 @@
 {
-	"name": "gracefulpoetry",
-	"displayName": "中文诗歌",
-	"description": "显示唐诗宋词的小插件",
+    "name": "gracefulpoetry",
+    "displayName": "中文诗歌",
+    "description": "显示唐诗宋词的小插件",
     "publisher": "Fallever",
     "repository": {
         "type": "github",
@@ -9,76 +9,182 @@
     },
     "icon": "media/icon.png",
     "author": "Fallever",
-	"version": "1.0.0",
-	"engines": {
-		"vscode": "^1.22.0"
-	},
-	"categories": [
-		"Other"
-	],
-	"activationEvents": [
-		"onStartupFinished"
-	],
-	"main": "./dist/extension.js",
-	"contributes": {
-		"views": {
-			"explorer": [
-				{
-					"type": "webview",
-					"id": "gracefulPoetry.view",
-					"name": "中文诗歌"
-				}
-			]
-		},
+    "version": "1.0.0",
+    "engines": {
+        "vscode": "^1.22.0"
+    },
+    "categories": [
+        "Other"
+    ],
+    "activationEvents": [
+        "onStartupFinished"
+    ],
+    "main": "./dist/extension.js",
+    "contributes": {
+        "views": {
+            "explorer": [
+                {
+                    "type": "webview",
+                    "id": "gracefulPoetry.view",
+                    "name": "中文诗歌"
+                }
+            ]
+        },
         "menus": {
             "view/title": [
                 {
                     "command": "gracefulpoetry.refresh",
                     "when": "view == gracefulPoetry.view",
                     "group": "navigation"
-                }
+                },
+                {
+                    "command": "gracefulpoetry.star",
+                    "when": "view == gracefulPoetry.view",
+                    "group": "navigation"
+                },
+                {
+                    "command": "gracefulpoetry.unstar",
+                    "when": "view == gracefulPoetry.view",
+                    "group": "navigation"
+                },
+                {
+                    "command": "gracefulpoetry.all",
+                    "when": "view == gracefulPoetry.view",
+                    "group": "navigation"
+                },
+                {
+                    "command": "gracefulpoetry.ci",
+                    "when": "view == gracefulPoetry.view",
+                    "group": "navigation"
+                },
+                {
+                    "command": "gracefulpoetry.poetry",
+                    "when": "view == gracefulPoetry.view",
+                    "group": "navigation"
+                },
+                {
+                    "command": "gracefulpoetry.allscope",
+                    "when": "view == gracefulPoetry.view",
+                    "group": "navigation"
+                },
+                {
+                    "command": "gracefulpoetry.starscope",
+                    "when": "view == gracefulPoetry.view",
+                    "group": "navigation"
+                },
+                
             ],
             "commandPalette": [
                 {
                     "command": "gracefulpoetry.refresh",
                     "when": "never"
+                },
+                {
+                    "command": "gracefulpoetry.star",
+                    "when": "never"
+                },
+                {
+                    "command": "gracefulpoetry.unstar",
+                    "when": "never"
+                },
+                {
+                    "command": "gracefulpoetry.all",
+                    "when": "never"
+                },
+                {
+                    "command": "gracefulpoetry.ci",
+                    "when": "never"
+                },
+                {
+                    "command": "gracefulpoetry.poetry",
+                    "when": "never"
+                },
+                {
+                    "command": "gracefulpoetry.allscope",
+                    "when": "never"
+                },
+                {
+                    "command": "gracefulpoetry.starscope",
+                    "when": "never"
                 }
             ]
         },
-		"commands": [
-			{
-				"command": "gracefulpoetry.refresh",
-				"title": "下一首",
-                "icon":"$(refresh)",
+        "commands": [
+            {
+                "command": "gracefulpoetry.refresh",
+                "title": "下一首",
+                "icon": "$(refresh)",
                 "category": "诗词"
-			}
-		]
-	},
-	"scripts": {
-		"vscode:prepublish": "npm run package",
-		"compile": "webpack",
-		"watch": "webpack --watch",
-		"package": "webpack --mode production --devtool hidden-source-map",
-		"test-compile": "tsc -p ./",
-		"test-watch": "tsc -watch -p ./",
-		"pretest": "npm run test-compile && npm run lint",
-		"lint": "eslint src --ext ts",
-		"test": "node ./out/test/runTest.js"
-	},
-	"devDependencies": {
-		"@types/vscode": "^1.22.0",
-		"@types/glob": "^7.1.3",
-		"@types/mocha": "^8.2.2",
-		"@types/node": "14.x",
-		"eslint": "^7.27.0",
-		"@typescript-eslint/eslint-plugin": "^4.26.0",
-		"@typescript-eslint/parser": "^4.26.0",
-		"glob": "^7.1.7",
-		"mocha": "^8.4.0",
-		"typescript": "^4.3.2",
-		"vscode-test": "^1.5.2",
-		"ts-loader": "^9.2.2",
-		"webpack": "^5.38.1",
-		"webpack-cli": "^4.7.0"
-	}
+            },
+            {
+                "command": "gracefulpoetry.star",
+                "title": "收藏",
+                "icon": "$(star-empty)",
+                "category": "诗词"
+            },
+            {
+                "command": "gracefulpoetry.unstar",
+                "title": "取消收藏",
+                "icon": "$(star-full)",
+                "category": "诗词"
+            },
+            {
+                "command": "gracefulpoetry.all",
+                "title": "类别所有",
+                "icon": "$(repo)",
+                "category": "诗词"
+            },
+            {
+                "command": "gracefulpoetry.ci",
+                "title": "类别词",
+                "icon": "$(repo-clone)",
+                "category": "诗词"
+            },
+            {
+                "command": "gracefulpoetry.poetry",
+                "title": "类别诗",
+                "icon": "$(repo-force-push)",
+                "category": "诗词"
+            },
+            {
+                "command": "gracefulpoetry.allscope",
+                "title": "所有范围",
+                "icon": "$(primitive-square)",
+                "category": "诗词"
+            },
+            {
+                "command": "gracefulpoetry.starscope",
+                "title": "收藏",
+                "icon": "$(heart)",
+                "category": "诗词"
+            }
+        ]
+    },
+    "scripts": {
+        "vscode:prepublish": "npm run package",
+        "compile": "webpack",
+        "watch": "webpack --watch",
+        "package": "webpack --mode production --devtool hidden-source-map",
+        "test-compile": "tsc -p ./",
+        "test-watch": "tsc -watch -p ./",
+        "pretest": "npm run test-compile && npm run lint",
+        "lint": "eslint src --ext ts",
+        "test": "node ./out/test/runTest.js"
+    },
+    "devDependencies": {
+        "@types/vscode": "^1.22.0",
+        "@types/glob": "^7.1.3",
+        "@types/mocha": "^8.2.2",
+        "@types/node": "14.x",
+        "eslint": "^7.27.0",
+        "@typescript-eslint/eslint-plugin": "^4.26.0",
+        "@typescript-eslint/parser": "^4.26.0",
+        "glob": "^7.1.7",
+        "mocha": "^8.4.0",
+        "typescript": "^4.3.2",
+        "vscode-test": "^1.5.2",
+        "ts-loader": "^9.2.2",
+        "webpack": "^5.38.1",
+        "webpack-cli": "^4.7.0"
+    }
 }

@@ -9,7 +9,7 @@
     },
     "icon": "media/icon.png",
     "author": "Fallever",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "engines": {
         "vscode": "^1.22.0"
     },

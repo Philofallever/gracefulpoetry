@@ -35,44 +35,43 @@
                 {
                     "command": "gracefulpoetry.refresh",
                     "when": "view == gracefulPoetry.view",
-                    "group": "navigation"
+                    "group": "navigation@3"
                 },
                 {
                     "command": "gracefulpoetry.star",
-                    "when": "view == gracefulPoetry.view",
-                    "group": "navigation"
+                    "when": "view == gracefulPoetry.view && !gracefulpoetry.star",
+                    "group": "navigation@3"
                 },
                 {
                     "command": "gracefulpoetry.unstar",
-                    "when": "view == gracefulPoetry.view",
-                    "group": "navigation"
+                    "when": "view == gracefulPoetry.view && gracefulpoetry.star",
+                    "group": "navigation@3"
                 },
                 {
                     "command": "gracefulpoetry.all",
-                    "when": "view == gracefulPoetry.view",
-                    "group": "navigation"
+                    "when": "view == gracefulPoetry.view && gracefulpoetry.classify == 2",
+                    "group": "navigation@1"
                 },
                 {
                     "command": "gracefulpoetry.ci",
-                    "when": "view == gracefulPoetry.view",
-                    "group": "navigation"
+                    "when": "view == gracefulPoetry.view && gracefulpoetry.classify == 0",
+                    "group": "navigation@1"
                 },
                 {
                     "command": "gracefulpoetry.poetry",
-                    "when": "view == gracefulPoetry.view",
-                    "group": "navigation"
+                    "when": "view == gracefulPoetry.view && gracefulpoetry.classify == 1",
+                    "group": "navigation@1"
                 },
                 {
                     "command": "gracefulpoetry.allscope",
-                    "when": "view == gracefulPoetry.view",
-                    "group": "navigation"
+                    "when": "view == gracefulPoetry.view && gracefulpoetry.starscope",
+                    "group": "navigation@2"
                 },
                 {
                     "command": "gracefulpoetry.starscope",
-                    "when": "view == gracefulPoetry.view",
-                    "group": "navigation"
-                },
-                
+                    "when": "view == gracefulPoetry.view && !gracefulpoetry.starscope",
+                    "group": "navigation@2"
+                }
             ],
             "commandPalette": [
                 {
@@ -130,32 +129,32 @@
             },
             {
                 "command": "gracefulpoetry.all",
-                "title": "类别所有",
+                "title": "设置类别:所有",
                 "icon": "$(repo)",
                 "category": "诗词"
             },
             {
                 "command": "gracefulpoetry.ci",
-                "title": "类别词",
+                "title": "设置类别:词",
                 "icon": "$(repo-clone)",
                 "category": "诗词"
             },
             {
                 "command": "gracefulpoetry.poetry",
-                "title": "类别诗",
+                "title": "设置类别:诗",
                 "icon": "$(repo-force-push)",
                 "category": "诗词"
             },
             {
                 "command": "gracefulpoetry.allscope",
-                "title": "所有范围",
-                "icon": "$(primitive-square)",
+                "title": "设置范围:所有",
+                "icon": "$(library)",
                 "category": "诗词"
             },
             {
                 "command": "gracefulpoetry.starscope",
-                "title": "收藏",
-                "icon": "$(heart)",
+                "title": "设置范围:收藏",
+                "icon": "$(output)",
                 "category": "诗词"
             }
         ]

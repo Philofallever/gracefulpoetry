@@ -28,7 +28,7 @@ let printError: logFunc = console.error;
 export enum liberType
 {
     ci,
-    poet,
+    poetry,
 }
 
 export interface rankEntry
@@ -76,6 +76,8 @@ export function onActivate(context: vscode.ExtensionContext): void
     // checkAuthors();
     checkFileMatch();
     loadStarList();
+    setClassifyAll();
+    setScopeAll();
 }
 
 export function onDeactive()
@@ -88,6 +90,7 @@ let _currViewEntry: entry;
 export function setCurrViewEntry(entry: entry)
 {
     _currViewEntry = entry;
+    setStarContext(isCurrStarred());
 }
 
 
@@ -210,7 +213,7 @@ async function loadStarList(): Promise<void>
     }
     finally
     {
-        print(_starList.length);
+        print(`收藏列表长度${_starList.length}`);
     }
 }
 
@@ -285,14 +288,27 @@ export async function getRankestEntryInSeveralTimes(count?: number, liberRandArg
     return <entry>result;
 }
 
-
+let currLiberType: liberType | undefined = undefined;
+let isStarScope = false;
 let lastEntry: entry | undefined;
-export async function getPopularEntry(liberRandArg?: number | liberType): Promise<entry>
+export async function getPopularEntry(): Promise<entry>
 {
-    if (lastEntry === undefined)
-        [lastEntry] = await getRandomliber();
 
-    const item = await getRankestEntryInSeveralTimes(5, liberRandArg);
+    if (isStarScope)
+    {
+        if (_starList.length > 0)
+        {
+            lastEntry = _starList[Math.floor(Math.random() * (_starList.length - 1))];
+            return lastEntry;
+        }
+        else
+            vscode.window.showErrorMessage("尚未收藏任何诗词");
+    }
+
+    if (lastEntry === undefined)
+        [lastEntry] = await getRandomliber(currLiberType);
+
+    const item = await getRankestEntryInSeveralTimes(5, currLiberType);
     if (item.rank > lastEntry.rank)
     {
         lastEntry = item;
@@ -305,7 +321,7 @@ export async function getPopularEntry(liberRandArg?: number | liberType): Promis
     while (x <= 20)
     {
         let r = lastEntry.rank * 1 / (0.01 * x * x);
-        let [entry, entryList] = await getRandomliber();
+        let [entry, entryList] = await getRandomliber(currLiberType);
         if (entry.rank > r)
         {
             lastEntry = entry;
@@ -325,18 +341,31 @@ export async function getPopularEntry(liberRandArg?: number | liberType): Promis
         ++x;
     }
 
-    [lastEntry] = await getRandomliber();
+    [lastEntry] = await getRandomliber(currLiberType);
     return lastEntry;
 }
 
 export function starCurrEntry(): void
 {
+    if (!_currViewEntry) return;
 
+    if (isCurrStarred()) return;
+
+    _starList.push(_currViewEntry);
+
+    setStarContext(true);
 }
 
 export function unstarCurrEntry(): void
 {
+    if (!_currViewEntry) return;
 
+    if (!isCurrStarred()) return;
+
+    let index = _starList.findIndex(isEqualCurrEntry);
+    if (index !== - 1)
+        _starList.splice(index, 1);
+    setStarContext(false);
 }
 
 export function isCurrStarred(): boolean
@@ -345,38 +374,68 @@ export function isCurrStarred(): boolean
 
     if (!_currViewEntry) return false;
 
+    return _starList.findIndex(isEqualCurrEntry) !== - 1;
+}
+
+export function setClassifyAll()
+{
+    currLiberType = undefined;
+    setClassifyContext(0);
+}
+
+export function setClassifyCi()
+{
+    currLiberType = liberType.ci;
+    setClassifyContext(1);
+}
+
+export function setClassifyPoetry()
+{
+    currLiberType = liberType.poetry;
+    setClassifyContext(2);
+}
+
+export function setScopeAll()
+{
+    isStarScope = false;
+    setScopeContext(false);
+}
+
+export function setScopeStarred()
+{
+    isStarScope = true;
+    setScopeContext(true);
+}
+
+function isEqualCurrEntry(item: entry): boolean
+{
+    if (!item || !_currViewEntry) return false;
+
+    if (_currViewEntry.author !== item.author || _currViewEntry.rhythmic !== item.rhythmic || _currViewEntry.title !== item.title) return false;
+
+    if (_currViewEntry.paragraphs.length !== item.paragraphs.length) return false;
+
+    for (let index = 0; index < _currViewEntry.paragraphs.length; index++)
+    {
+        if (_currViewEntry.paragraphs[index] !== item.paragraphs[index])
+            return false;
+    }
+
     return true;
-    // return _starList.find((x, i) =>
-    // {
-    //     return true;
-    // });
-}   
-
-export function all(arg0: string, all: any)
-{
-    throw new Error("Function not implemented.");
 }
 
 
-export function ci(arg0: string, ci: any)
+function setStarContext(value: boolean): void
 {
-    throw new Error("Function not implemented.");
+    vscode.commands.executeCommand("setContext", 'gracefulpoetry.star', value);
 }
 
-
-export function poetry(arg0: string, poetry: any)
+function setClassifyContext(value: number): void
 {
-    throw new Error("Function not implemented.");
+    vscode.commands.executeCommand("setContext", 'gracefulpoetry.classify', value);
 }
 
-
-export function allscope(arg0: string, allscope: any)
+function setScopeContext(value: boolean)
 {
-    throw new Error("Function not implemented.");
-}
-
-
-export function starscope(arg0: string, starscope: any)
-{
-    throw new Error("Function not implemented.");
+    vscode.commands.executeCommand("setContext", 'gracefulpoetry.starscope', value);
 }

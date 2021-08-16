@@ -251,6 +251,7 @@ export async function getRandomliber(liberRandArg?: liberType | number): Promise
         f = d[Math.floor(Math.random() * (d.length - 1))];
     } while (f.includes("author"));
     p = path.join(p, f);
+    print(p);
     const entries = await loadJson<entry>(p);
     let index = Math.floor(Math.random() * (entries.length - 1));
     const [first, second, ...rest] = f.split(".");
@@ -260,7 +261,20 @@ export async function getRandomliber(liberRandArg?: liberType | number): Promise
     entries.forEach((x, index) =>
     {
         const rank = ranks[index];
-        x.rank = rank ? Math.floor(rank.baidu * 0.7 + rank.google * 0.2 + rank.bing * 0.1) : 0;
+        // 修正rank数据,错的也太远了
+        let score = rank ? rank.baidu : 0;
+
+        let t = x.rhythmic ?? x.title;
+        if (x.author.length < 2 || (t && t.length < 2))
+        {
+            while (score > 10000)
+                score /= 10;
+        }
+
+        if (score >= 10000000)
+            score /= Math.random() * 1000000;
+
+        x.rank = score;
     });
 
     const entry = entries[index];
@@ -320,8 +334,9 @@ export async function getPopularEntry(): Promise<entry>
 
     while (x <= 20)
     {
-        let r = lastEntry.rank * 1 / (0.01 * x * x);
+        let r = lastEntry.rank * 1 / (1 + 0.05 * Math.pow(lastEntry.rank > 1000000 ? 21 : 7, x));
         let [entry, entryList] = await getRandomliber(currLiberType);
+        print(x, lastEntry, entry);
         if (entry.rank > r)
         {
             lastEntry = entry;

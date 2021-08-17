@@ -1,6 +1,7 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 
+
 import * as path from "path";
 import * as vscode from 'vscode';
 import * as gracefulpoetry from "./gracefulpoetry";
@@ -15,15 +16,17 @@ export async function activate(context: vscode.ExtensionContext)
     _context = context;
     gracefulpoetry.onActivate(context);
     vscode.window.registerWebviewViewProvider(PoetryView.viewId, new PoetryView(context));
-    vscode.commands.registerCommand("gracefulpoetry.refresh", PoetryView.refresh);
-    vscode.commands.registerCommand("gracefulpoetry.star", gracefulpoetry.starCurrEntry);
-    vscode.commands.registerCommand("gracefulpoetry.unstar", gracefulpoetry.unstarCurrEntry);
-    vscode.commands.registerCommand("gracefulpoetry.all", gracefulpoetry.setClassifyAll);
-    vscode.commands.registerCommand("gracefulpoetry.ci", gracefulpoetry.setClassifyCi);
-    vscode.commands.registerCommand("gracefulpoetry.poetry", gracefulpoetry.setClassifyPoetry);
-    vscode.commands.registerCommand("gracefulpoetry.allscope", gracefulpoetry.setScopeAll);
-    vscode.commands.registerCommand("gracefulpoetry.starscope", gracefulpoetry.setScopeStarred);
-
+    let disposables = [
+        vscode.commands.registerCommand("gracefulpoetry.refresh", PoetryView.refresh),
+        vscode.commands.registerCommand("gracefulpoetry.star", gracefulpoetry.starCurrEntry),
+        vscode.commands.registerCommand("gracefulpoetry.unstar", gracefulpoetry.unstarCurrEntry),
+        vscode.commands.registerCommand("gracefulpoetry.all", gracefulpoetry.setClassifyAll),
+        vscode.commands.registerCommand("gracefulpoetry.ci", gracefulpoetry.setClassifyCi),
+        vscode.commands.registerCommand("gracefulpoetry.poetry", gracefulpoetry.setClassifyPoetry),
+        vscode.commands.registerCommand("gracefulpoetry.allscope", gracefulpoetry.setScopeAll),
+        vscode.commands.registerCommand("gracefulpoetry.starscope", gracefulpoetry.setScopeStarred),
+    ];
+    disposables.forEach(x => context.subscriptions.push(x));
 }
 
 // this method is called when your extension is deactivated

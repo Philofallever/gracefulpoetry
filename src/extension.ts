@@ -27,6 +27,7 @@ export async function activate(context: vscode.ExtensionContext)
         vscode.commands.registerCommand("gracefulpoetry.starscope", gracefulpoetry.setScopeStarred),
     ];
     disposables.forEach(x => context.subscriptions.push(x));
+    setInterval(PoetryView.refresh,600000);
 }
 
 // this method is called when your extension is deactivated
